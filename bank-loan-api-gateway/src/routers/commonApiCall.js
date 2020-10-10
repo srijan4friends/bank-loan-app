@@ -10,7 +10,6 @@ const simplePostCall = (api, req, res)=>{
 }
 
 const headerPostCall = (api, req, res) => {
-    console.log('here')
     api.post(req.path, req.body,{
         headers: {
             Authorization: req.header('Authorization')
@@ -23,7 +22,6 @@ const headerPostCall = (api, req, res) => {
 }
 
 const headerGetCall = (api, req, res) => {
-    console.log(req.body)
     api.get(req.path,{
         headers: {
             Authorization: req.header('Authorization')
