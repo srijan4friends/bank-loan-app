@@ -11,7 +11,7 @@ router.post('/loan/new', (req, res) => {
     commonApiCall.headerPostCall(api, req, res)
 })
 
-router.get('/loan/single', (req, res) => {
+router.get('/loan/single/:loanId', (req, res) => {
     commonApiCall.headerGetCall(api, req, res)
 })
 

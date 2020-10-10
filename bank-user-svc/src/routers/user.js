@@ -12,7 +12,7 @@ router.post('/users', async (req, res) => {
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
     } catch (e) {
-        res.status(400).send(e)
+        res.send({error:'unable to register'})
     }
 })
 
@@ -23,7 +23,7 @@ router.post('/users/login', async (req, res) => {
         const token = await user.generateAuthToken()
         res.send({ user, token })
     } catch (e) {
-        res.status(400).send()
+        res.send({error:'Unable to login!'})
     }
 })
 
@@ -38,7 +38,7 @@ router.post('/users/logout', auth, async (req, res) => {
 
         res.send('You are successfully logged out!')
     } catch (e) {
-        res.status(500).send()
+        res.send({error:'Unable to logout!'})
     }
 })
 
@@ -47,7 +47,7 @@ router.get('/users/me', auth, async (req, res) => {
     try{
         res.send(req.user)
     }catch(e){
-        res.status(400).send()
+        res.send({error: 'unable to get user profile'})
     }
 })
 
@@ -59,7 +59,7 @@ router.patch('/users/me', auth, async (req, res) => {
 
     if (!isValidOperation) {
         console.log('here')
-        return res.status(400).send({ error: 'Invalid updates!' })
+        return res.send({ error: 'Invalid updates!' })
     }
 
     try {
@@ -67,7 +67,7 @@ router.patch('/users/me', auth, async (req, res) => {
         await req.user.save()
         res.send(req.user)
     } catch (e) {
-        res.status(400).send(e)
+        res.send({error:'Unable to update user details!'})
     }
 })
 

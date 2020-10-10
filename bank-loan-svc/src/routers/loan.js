@@ -10,22 +10,22 @@ router.post('/loan/new', auth, async(req, res) => {
         await loan.save()
         res.status(201).send({loan})
     }catch(err){
-        res.status(404).send(err)
+        res.send({error: 'Unable to create new loan request!'})
     }
 })
 
-router.get('/loan/single', auth, async(req, res) => {
+router.get('/loan/single/:loanId', auth, async(req, res) => {
     const owner = req._id
-    const loanId = req.body.loanId
+    const loanId = req.params.loanId
 
     try{
         const loan = await Loan.findOne({_id: loanId, owner})
         if(!loan){
-            return res.status(400).send('No loan found for the owner')
+            return res.send('No loan found for the owner')
         }
         res.send(loan)
     }catch(err){
-        res.status(400).send(err)
+        res.send({error: 'Unable to find loan details'})
     }
 })
 
@@ -38,7 +38,7 @@ router.get('/loan/all', auth, async(req, res) => {
         }
         res.send(loan)
     }catch(err){
-        res.status(400).send(err)
+        res.send({error: 'Unable to find loan details'})
     }
 })
 
