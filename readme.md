@@ -69,11 +69,8 @@ Application will be running on: http://localhost:3000/
             }
             
          b. Get single loan details of user:
-            GET(/loan/single):
+            GET(/loan/single/:loanid):
             Put authorization token on header
-            {
-            "loanId": "5f7f7e86805aaa46fd390b3e"
-            }
             
         c. get all loan details of the user:
             GET(/Loan/all):
