@@ -3,9 +3,9 @@ var router = express.Router()
 
 const simplePostCall = (api, req, res)=>{
     api.post(req.path, req.body).then(resp => {
-        res.send(resp.data)
+        res.status(resp.data.status).send(resp.data.message)
       }).catch((err) => {
-        res.send(err)
+        res.status(400).send(err)
     })
 }
 
@@ -15,9 +15,9 @@ const headerPostCall = (api, req, res) => {
             Authorization: req.header('Authorization')
         }
     }).then(resp => {
-        res.send(resp.data)
+        res.status(resp.data.status).send(resp.data.message)
       }).catch((err) => {
-        res.send(err)
+        res.status(400).send(err)
     })
 }
 
@@ -27,9 +27,9 @@ const headerGetCall = (api, req, res) => {
             Authorization: req.header('Authorization')
         }
     }).then(resp => {
-        res.send(resp.data)
+        res.status(resp.data.status).send(resp.data.message)
       }).catch((err) => {
-        res.send(err)
+        res.status(400).send(err)
     })
 }
 
@@ -39,9 +39,9 @@ const headerPatchCall = (api, req, res) => {
             Authorization: req.header('Authorization')
         }
     }).then(resp => {
-        res.send(resp.data)
+        res.status(resp.data.status).send(resp.data.message)
       }).catch((err) => {
-        res.send(err)
+        res.status(400).send(err)
     })
 }
 

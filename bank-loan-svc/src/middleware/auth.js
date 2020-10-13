@@ -10,7 +10,7 @@ const auth = async (req, res, next) => {
         next()
     } catch (e) {
         console.log(e)
-        res.send({ error: 'Please authenticate yourself for loan.' })
+        res.send({status:401, message:{error: 'Please authenticate.' }})
     }
 }
 

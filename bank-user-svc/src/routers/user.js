@@ -10,9 +10,9 @@ router.post('/users', async (req, res) => {
     try {
         await user.save()
         const token = await user.generateAuthToken()
-        res.status(201).send({ user, token })
+        res.send({ status: 201, message:{user, token }})
     } catch (e) {
-        res.send({error:'unable to register'})
+        res.send({status: 400, message:{error:'unable to register'}})
     }
 })
 
@@ -21,9 +21,9 @@ router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.username, req.body.password)
         const token = await user.generateAuthToken()
-        res.send({ user, token })
+        res.send({ status: 200, message:{ user, token }})
     } catch (e) {
-        res.send({error:'Unable to login!'})
+        res.send({status:401, message:{error:'Unable to login!'}})
     }
 })
 
@@ -36,18 +36,18 @@ router.post('/users/logout', auth, async (req, res) => {
         req.user.token = ''
         await req.user.save()
 
-        res.send('You are successfully logged out!')
+        res.send({status:200, message:'You are successfully logged out!'})
     } catch (e) {
-        res.send({error:'Unable to logout!'})
+        res.send({status:401, message:{error:'Unable to logout!'}})
     }
 })
 
 //get user profile details
 router.get('/users/me', auth, async (req, res) => {
     try{
-        res.send(req.user)
+        res.send({status: 200, message: req.user})
     }catch(e){
-        res.send({error: 'unable to get user profile'})
+        res.send({status:404, message:{ error: 'unable to get user profile'}})
     }
 })
 
@@ -58,16 +58,15 @@ router.patch('/users/me', auth, async (req, res) => {
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
-        console.log('here')
-        return res.send({ error: 'Invalid updates!' })
+        return res.send({status:400, message:{error: 'Invalid updates!' }})
     }
 
     try {
         updates.forEach((update) => req.user[update] = req.body[update])
         await req.user.save()
-        res.send(req.user)
+        res.send({status:200, message: req.user})
     } catch (e) {
-        res.send({error:'Unable to update user details!'})
+        res.send({status: 400, message:{ error:'Unable to update user details!'}})
     }
 })
 

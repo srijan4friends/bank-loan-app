@@ -8,9 +8,9 @@ router.post('/loan/new', auth, async(req, res) => {
     try{
         loan.owner = req._id
         await loan.save()
-        res.status(201).send({loan})
+        res.send({status:201, message:loan})
     }catch(err){
-        res.send({error: 'Unable to create new loan request!'})
+        res.send({status: 400, message:{error: 'Unable to create new loan request!'}})
     }
 })
 
@@ -21,11 +21,11 @@ router.get('/loan/single/:loanId', auth, async(req, res) => {
     try{
         const loan = await Loan.findOne({_id: loanId, owner})
         if(!loan){
-            return res.send('No loan found for the owner')
+            return res.send({status:404, message:{ error:'No loan found for the owner'}})
         }
-        res.send(loan)
+        res.send({status:200, message:loan})
     }catch(err){
-        res.send({error: 'Unable to find loan details'})
+        res.send({status:404, message:{ error: 'Unable to get loan details'}})
     }
 })
 
@@ -34,11 +34,11 @@ router.get('/loan/all', auth, async(req, res) => {
     try{
         const loan = await Loan.find({owner})
         if(!loan){
-            return res.status(400).send('No loan found for the owner')
+            return res.send({status:404, message:{error:'No loan found for the owner'}})
         }
-        res.send(loan)
+        res.send({status:200, message: loan})
     }catch(err){
-        res.send({error: 'Unable to find loan details'})
+        res.send({status:404, message:{ error: 'Unable to find loan details'}})
     }
 })
 
