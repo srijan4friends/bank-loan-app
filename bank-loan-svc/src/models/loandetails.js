@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const logger = require('../common/logging-service')
+
+const log = new logger('Loan-model')
 
 const loanDetailsSchema = new mongoose.Schema({
     owner:{
@@ -16,6 +19,7 @@ const loanDetailsSchema = new mongoose.Schema({
         required: true,
         validate(value){
             if(value <= 0){
+                log.error('Invalid loan amount.', value)
                 throw new Error("Enter correct loan ammount!")
             }
         }
@@ -23,17 +27,13 @@ const loanDetailsSchema = new mongoose.Schema({
     loanDate: {
         type: Date,
         required: true,
-        trim: true,
-        /*validate(value){
-            if(!validator.isAfter(value)){
-                throw new Error("Enter current or future date(mm-dd-yyyy)!")
-            }
-        }*/
+        trim: true
     },
     roi: {
         type: Number,
         required: true,validate(value){
             if(value <= 0){
+                log.error('Invalid roi.', value)
                 throw new Error("Enter correct rate of interest!")
             }
         }
@@ -43,6 +43,7 @@ const loanDetailsSchema = new mongoose.Schema({
         required: true,
         validate(value){
             if(value <= 0){
+                log.error('Invalid duration.', value)
                 throw new Error("Enter correct duration!")
             }
         }
@@ -59,6 +60,7 @@ loanDetailsSchema.pre('save', async function(next){
     const totMonthlyInst = this.duration*12
     const part1 = ((1+mroi)^totMonthlyInst)/(((1+mroi)^totMonthlyInst)-1)
     this.installmentAmt = this.loanAmt * mroi * part1
+    log.info('caculated monthly installment:', this.installmentAmt)
     next()
 })
 

@@ -2,7 +2,11 @@ var express = require('express');
 var app = express();
 var router = require('./routers/router')
 var bodyParser = require('body-parser');
+const logger = require('./logging-service')
 
+const log = new logger('Api-gateway-startup')
+
+const port = process.env.PORT || 3000
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -12,6 +16,7 @@ app.get('/', (req, res) => {
 
 app.use(router)
 
-console.log("Simple API Gateway run on localhost:3000")
-
-app.listen(3000);
+app.listen(port, () => {
+    log.info('Api gateway started on port:', port)
+    console.log('Api gateway is up on port ' + port)
+})

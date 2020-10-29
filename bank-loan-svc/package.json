@@ -10,11 +10,13 @@
   "author": "Srijan Khan",
   "license": "ISC",
   "dependencies": {
+    "eureka-js-client": "^4.5.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.8",
-    "validator": "^13.1.17"
+    "validator": "^13.1.17",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

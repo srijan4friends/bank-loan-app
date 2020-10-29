@@ -1,3 +1,6 @@
 bank-loan-api-gateway/node_modules/
 bank-loan-svc/node_modules/
 bank-user-svc/node_modules/
+bank-loan-api-gateway/logs/
+bank-loan-svc/logs/
+bank-user-svc/logs/
