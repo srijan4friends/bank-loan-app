@@ -5,19 +5,31 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "test": "mocha --timeout 10000 test/user.js "
   },
   "author": "Srijan Khan",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.3.0",
+    "eureka-js-client": "^4.5.0",
+    "expect": "^26.6.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.8",
-    "validator": "^13.1.17"
+    "rewire": "^5.0.0",
+    "sinon": "^9.2.0",
+    "sinon-chai": "^3.5.0",
+    "supertest": "^5.0.0",
+    "validator": "^13.1.17",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
+    "mocha": "^8.2.0",
     "nodemon": "^2.0.4"
   }
 }

@@ -2,7 +2,15 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-//const Task = require('./task')
+const logger = require('../common/logging-service')
+
+/*import mongoose from 'mongoose'
+import validator from 'validator'
+import * as bcrypt from 'bcryptjs'
+import * as jwt from 'jsonwebtoken'
+import CustomLogger from '../logging-service.js'*/
+
+const log = new logger('User-model')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -18,6 +26,7 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
+                log.error('Invalid email.', value)
                 throw new Error('Email is invalid')
             }
         }
@@ -29,6 +38,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if(!validator.isAlphanumeric(value)){
+                log.error('Invalid username.', value)
                 throw new Error('Username should contain only letters and numbers!')
             }
         }
@@ -40,6 +50,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if (value.toLowerCase().includes('password')) {
+                log.error('Password cannot contain "password"')
                 throw new Error('Password cannot contain "password"')
             }
         }
@@ -55,6 +66,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if(!validator.isAlpha(value)){
+                log.error('Invalid state.', value)
                 throw new Error('Invalid State!')
             }
         }
@@ -65,6 +77,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if(!validator.isAlpha(value)){
+                log.error('Invalid country.', value)
                 throw new Error('Invalid country!')
             }
         }
@@ -78,6 +91,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if(!validator.isAlphanumeric(value)){
+                log.error('Invalid PAN number.', value)
                 throw new Error('Invalid PAN number')
             }
         }
@@ -101,16 +115,11 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if(!validator.isAlpha(value)){
+                log.error('Invalid account type.', value)
                 throw new Error('Invalid account type!')
             }
         }
     },
-    /*tokens: [{
-        token: {
-            type: String,
-            required: true
-        }
-    }]*/
     token: {
         type: String,
         required: false
@@ -129,29 +138,34 @@ userSchema.methods.toJSON = function () {
 }
 
 userSchema.methods.generateAuthToken = async function () {
+    log.info('generateAuthToken: Generating jwt token!')
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'thisisCDEMEANcourse',{expiresIn: '1801s'})
-
-    //user.tokens = user.tokens.concat({ token })
+    log.info('User token created successfully.')
     user.token = token
     await user.save()
+    log.info('User token saved in DB successfully.')
 
     return token
 }
 
 userSchema.statics.findByCredentials = async (username, password) => {
+    log.info('findByCredentials: Find user details.',username)
     const user = await User.findOne({ username })
 
     if (!user) {
+        log.error('Unable to get user details for login')
         throw new Error('Unable to login')
     }
-
+    log.info('findByCredentials: Retrieved user details.',username)
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
+        log.error('Password mismatch!')
         throw new Error('Unable to login')
     }
 
+    log.info('findByCredentials: Credentials matched.',username)
     return user
 }
 
