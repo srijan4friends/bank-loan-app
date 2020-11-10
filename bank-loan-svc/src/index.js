@@ -10,7 +10,7 @@ require('./common/eureka-helper').registerWithEureka('loan-service', port)
 const app = express()
 
 app.use(express.json())
-app.use(loanRouter)
+app.use('/v1',loanRouter)
 
 app.listen(port, () => {
     log.info('User service started on port:', port)

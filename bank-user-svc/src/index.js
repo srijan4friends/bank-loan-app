@@ -14,7 +14,7 @@ const log = new logger('User-startup')
 const app = express()
 
 app.use(express.json())
-app.use(userRouter)
+app.use('/v1',userRouter)
 
 
 app.listen(port, () => {
