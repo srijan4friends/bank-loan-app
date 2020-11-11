@@ -4,6 +4,7 @@ This app consists of 3 services.
 1. bank-loan-apigateway: This will serve as a gateway for all requests coming to the application. Based on the user action/url, it will redirect the request to appropriate service.
 To Run: npm run dev
 Application will be running on: http://localhost:3000/
+(This is not required anymore as eureka and zuul has been cnfigured, but this is a good example of how to create api gateway)
 
 2. bank-user-svc: This will receive all user action related requests and serve them as appropriate.
 
