@@ -6,7 +6,11 @@ To Run: npm run dev
 Application will be running on: http://localhost:3000/
 (This is not required anymore as eureka and zuul has been cnfigured, but this is a good example of how to create api gateway)
 
-2. bank-user-svc: This will receive all user action related requests and serve them as appropriate.
+2. eureka-service: This is a spring boot java service running on port 8761 for service registry.
+
+3. zuul-service: This is a spring boot java service running on port 8762 for service discovery. You need to configure other microservices details in this.
+
+4. bank-user-svc(http://localhost:8762/users-service/v1/): This will receive all user action related requests and serve them as appropriate.
 
         a.Register User:
         
@@ -56,7 +60,7 @@ Application will be running on: http://localhost:3000/
         }
    
 
-3. bank-loan-svc: This will receive all loan related requests and serve them as appropriate.
+5. bank-loan-svc(http://localhost:8762/loan-service/v1): This will receive all loan related requests and serve them as appropriate.
 
         a. New Loan:
             POST(/loan/new):
